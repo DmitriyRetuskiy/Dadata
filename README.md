@@ -1,7 +1,7 @@
 # Using
 
 
-Для работы проекта выполнить <br /> 
+Для работы проекта выполнить  <br /> 
     git bush here <br />
     git clone https://github.com/DmitriyRetuskiy/Dadata <br />
     in directory Dadata <br />
