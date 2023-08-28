@@ -1,0 +1,36 @@
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://localhost:2375/
+  image: cr.yandex/yc/metadata-token-docker-helper:0.2
+  services:
+    - docker:19.03.1-dind
+  script:
+    - docker build . -f .dockerfile -t cr.yandex/crp770o7rua4k773m433/skdesign/is/media:gitlab-$CI_COMMIT_SHORT_SHA
+    - docker push cr.yandex/crp770o7rua4k773m433/skdesign/is/media:gitlab-$CI_COMMIT_SHORT_SHA
+  only:
+    - merge_request
+    - main
+
+deploy:
+  image: gcr.io/cloud-builders/kubectl:latest
+  stage: deploy
+  script:
+    - kubectl config set-cluster k8s --server="$KUBE_URL" --insecure-skip-tls-verify=true
+    - kubectl config set-credentials admin --token="$KUBE_TOKEN"
+    - kubectl config set-context default --cluster=k8s --user=admin
+    - kubectl config use-context default
+    - sed -i "s/__VERSION__/gitlab-$CI_COMMIT_SHORT_SHA/" deploy/k8s/deployment.yaml
+    - kubectl apply -f deploy/k8s/external-secrets.yaml
+    - kubectl apply -f deploy/k8s/deployment.yaml
+    - kubectl apply -f deploy/k8s/service.yaml
+    - kubectl apply -f deploy/k8s/ingress.yaml
+  only:
+    - merge_request
+    - main

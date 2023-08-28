@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: is-media-api-lumen
+  annotations:
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    nginx.ingress.kubernetes.io/add-base-url: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/client_max_body_size: "32m"
+    nginx.ingress.kubernetes.io/proxy-body-size: "32m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    certmanager.k8s.io/disable-auto-restart: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - cdn.skdesign.ru
+      secretName: cdn-skdesign-ru-ssl
+  rules:
+    - host: cdn.skdesign.ru
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: is-media-api-lumen
+                port:
+                  number: 80

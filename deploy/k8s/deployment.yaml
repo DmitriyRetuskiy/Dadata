@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: is-media-api-lumen
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: is-media-api-lumen
+  template:
+    metadata:
+      labels:
+        app: is-media-api-lumen
+    spec:
+      securityContext:
+        fsGroup: 33
+      containers:
+        - name: is-media-api-lumen
+          image: cr.yandex/crp770o7rua4k773m433/skdesign/is/media:__VERSION__
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: is
+              mountPath: /var/www/html/storage/app/public
+              subPath: media
+          env:
+            - name: STORAGE_PATH
+              valueFrom:
+                secretKeyRef:
+                  name: is-media-api-lumen
+                  key: STORAGE_PATH
+            - name: DB_CONNECTION
+              valueFrom:
+                secretKeyRef:
+                  name: is-media-api-lumen
+                  key: DB_CONNECTION
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: is-media-api-lumen
+                  key: DB_HOST
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: is-media-api-lumen
+                  key: DB_DATABASE
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: is-media-api-lumen
+                  key: DB_USERNAME
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: is-media-api-lumen
+                  key: DB_PORT
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: is-media-api-lumen
+                  key: DB_PASSWORD
+          imagePullPolicy: Always
+      volumes:
+        - name: is
+          persistentVolumeClaim:
+            claimName: is
