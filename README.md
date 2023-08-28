@@ -2,14 +2,14 @@
 
 
 Doing 
-    git bush here
-    git clone https://github.com/DmitriyRetuskiy/Dadata
-    in directory Dadata
-    use composer install 
-For project use
- Nginx
- PHP_8.1
- MySQL-5.7-Win10
+    git bush here <br />
+    git clone https://github.com/DmitriyRetuskiy/Dadata <br />
+    in directory Dadata <br />
+    use composer install  <br />
+For project use <br />
+ Nginx   <br />
+ PHP_8.1 <br />
+ MySQL-5.7-Win10 <br />
  
 
 
