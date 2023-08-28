@@ -1,3 +1,19 @@
+# Using
+
+
+Doing 
+    git bush here
+    git clone https://github.com/DmitriyRetuskiy/Dadata
+    in directory Dadata
+    use composer install 
+For project use
+ Nginx
+ PHP_8.1
+ MySQL-5.7-Win10
+ 
+
+
+
 # Lumen PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
